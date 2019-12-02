@@ -5,37 +5,37 @@ import java.util.Objects;
 
 @NamedQueries({
     @NamedQuery(name = "show_all_words",
-                    query = "")
+                    query = "SELECT w FROM Words w")
 })
 
 @Entity
 @Table(name = "words", schema = "hangman_words")
 
 public class Words {
+    private static final String PRODUCTS_SEQUENCE = "products_id_sequence";
+    private static final String PRODUCTS_GENERATOR = "products_generator";
+
     @Id
+    @SequenceGenerator(name="PRODUCTS_GENERATOR", sequenceName = PRODUCTS_SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = PRODUCTS_GENERATOR)
     private int id;
 
     @Column(name = "nameWord")
     private String name;
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
+    }
+    public int getId(){
+        return this.id;
     }
 
     @Override
     public String toString() {
-        return "Words{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        return "Words = (" +
+                "id = " + id +
+                ", name = '" + name + '\'' +
+                ')';
     }
 
     @Override
@@ -50,6 +50,10 @@ public class Words {
     @Override
     public int hashCode() {
         return Objects.hash(id, name);
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String name) {
