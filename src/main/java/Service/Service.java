@@ -75,7 +75,7 @@ public class Service {
 
     public void insertAWord() {
 
-        System.out.print("Please enter the name of the word you want to insert: ");
+        System.out.println("Please enter the name of the word you want to insert:");
         String wordInserted = s.next();
         word.setName(wordInserted);
         wordsDAO.insertWord(word);
