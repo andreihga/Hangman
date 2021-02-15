@@ -64,12 +64,18 @@ public class Service {
                 break;
             case 5:
                 System.out.println("Testing");
-                System.out.println(getRandomWord(wordsDAO.viewAllWords())); // gives a random word from the list
+                playTheGame(getRandomWord(wordsDAO.viewAllWords()));
                 break;
             case 6:
                 System.out.println("Bye!");
                 isRunning = false;
             default:
+        }
+    }
+
+    public void playTheGame(String randomWord){
+        for (int i = 0; i < randomWord.length(); i++) {
+            randomWord.charAt(i);
         }
     }
 
