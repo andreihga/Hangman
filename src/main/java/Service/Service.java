@@ -75,11 +75,11 @@ public class Service {
         }
     }
 
-    public void playTheGame(Scanner scanner){
+    public void playTheGame(Scanner scanner) {
 
         boolean keepGoing = true;
         while (keepGoing) {
-            logic.gameLogic(s,getRandomWord(wordsDAO.viewAllWords()));
+            logic.gameLogic(s, getRandomWord(wordsDAO.viewAllWords()));
             System.out.print("\nAgain? (y/n)");
             String decision = scanner.next();
             if (!decision.equalsIgnoreCase("y")) {
@@ -90,22 +90,22 @@ public class Service {
 
     }
 
-    public String[] createArrayOfStars(int length){
-
-        String[] arrayOfStars = new String[length];
-
-        for (int i = 0; i < length; i++) {
-            arrayOfStars[i] = "*";
-        }
-        return arrayOfStars;
-    }
-
     public void insertAWord() {
+        boolean isRunning = true;
 
-        System.out.println("Please enter the name of the word you want to insert:");
-        String wordInserted = s.next();
-        word.setName(wordInserted);
-        wordsDAO.insertWord(word);
+        while (isRunning) {
+//            wordsDAO = new WordsDAO();
+            word = new Words();
+            System.out.println("Please enter the name of the word you want to insert:");
+            String wordInserted = s.next();
+            word.setName(wordInserted);
+            wordsDAO.insertWord(word);
+            System.out.println("Insert another? (y/n)");
+            String response = s.next();
+            if(!response.equalsIgnoreCase("y")){
+                isRunning = false;
+            }
+        }
     }
 
     public void viewAllWords() {
@@ -124,7 +124,8 @@ public class Service {
             }
         }
     }
-    public void updateWord(){
+
+    public void updateWord() {
         Words newWord = new Words();
         System.out.println("Insert the id of the word you want to update: ");
         int updatedId = s.nextInt();
@@ -137,7 +138,7 @@ public class Service {
         wordsDAO.updateWordById(newWord);
     }
 
-    private String getRandomWord(List<Words> listOfWords){
+    private String getRandomWord(List<Words> listOfWords) {
 
         int randomIndex = new Random().nextInt(listOfWords.size()); // first we generate a random number
         return listOfWords.get(randomIndex).getName(); // the random number is the index for a position from the list
