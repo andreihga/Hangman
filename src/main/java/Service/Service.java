@@ -12,12 +12,14 @@ public class Service {
     private WordsDAO wordsDAO;
     private Scanner s;
     private boolean isRunning;
+    Logic logic;
 
     public Service() {
 
         wordsDAO = new WordsDAO();
         s = new Scanner(System.in);
         isRunning = true;
+        logic = new Logic();
     }
 
     public void action() {
@@ -63,8 +65,8 @@ public class Service {
                 updateWord();
                 break;
             case 5:
-                System.out.println("Testing");
-                playTheGame(getRandomWord(wordsDAO.viewAllWords()));
+                System.out.println("Play!");
+                playTheGame(s);
                 break;
             case 6:
                 System.out.println("Bye!");
@@ -73,10 +75,29 @@ public class Service {
         }
     }
 
-    public void playTheGame(String randomWord){
-        for (int i = 0; i < randomWord.length(); i++) {
-            randomWord.charAt(i);
+    public void playTheGame(Scanner scanner){
+
+        boolean keepGoing = true;
+        while (keepGoing) {
+            logic.gameLogic(s,getRandomWord(wordsDAO.viewAllWords()));
+            System.out.print("\nAgain? (y/n)");
+            String decision = scanner.next();
+            if (!decision.equalsIgnoreCase("y")) {
+                keepGoing = false;
+            }
         }
+
+
+    }
+
+    public String[] createArrayOfStars(int length){
+
+        String[] arrayOfStars = new String[length];
+
+        for (int i = 0; i < length; i++) {
+            arrayOfStars[i] = "*";
+        }
+        return arrayOfStars;
     }
 
     public void insertAWord() {
