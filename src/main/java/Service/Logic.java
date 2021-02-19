@@ -64,7 +64,7 @@ public class Logic {
     }
 
     public Character[] initialWording(String randomWord) {    // initialize the word for helping the user
-        Character[] arrayOfStars = createArrayOfStars(randomWord.length());
+        Character[] arrayOfStars = createArrayOfUnderscores(randomWord.length());
 
         Character[] arrayOfWord = parseWordToArray(randomWord);
 
@@ -87,7 +87,7 @@ public class Logic {
         return arrayOfStars;
     }
 
-    public Character[] createArrayOfStars(int length) {     // this array will be displayed
+    public Character[] createArrayOfUnderscores(int length) {     // this array will be displayed
 
         Character[] arrayOfStars = new Character[length];
 
@@ -104,7 +104,6 @@ public class Logic {
         }
         return arrayForWord;
     }
-
 }
 
 
