@@ -113,6 +113,7 @@ public class Service {
     private String getRandomWord(List<Words> listOfWords){
 
         int randomIndex = new Random().nextInt(listOfWords.size()); // first we generate a random number
-        return listOfWords.get(randomIndex).getName(); // the random number is the index for a position from the list
+        return listOfWords.get(randomIndex).getName(); // the random number is the index for
+                                                        // a position from the list
     }
 }
