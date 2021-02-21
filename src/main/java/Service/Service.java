@@ -12,13 +12,16 @@ public class Service {
     private WordsDAO wordsDAO;
     private Scanner s;
     private boolean isRunning;
-    Logic logic;
+    private Logic logic;
+    private Random random;
+
 
     public Service() {
 
         wordsDAO = new WordsDAO();
         s = new Scanner(System.in);
         isRunning = true;
+        random = new Random();
         logic = new Logic();
     }
 
@@ -79,7 +82,7 @@ public class Service {
 
         boolean keepGoing = true;
         while (keepGoing) {
-            logic.gameLogic(s, getRandomWord(wordsDAO.viewAllWords()));
+            logic.gameLogic(s, getRandomWord(wordsDAO.viewAllWords()),random);
             System.out.print("\nAgain? (y/n)");
             String decision = scanner.next();
             if (!decision.equalsIgnoreCase("y")) {
@@ -138,7 +141,7 @@ public class Service {
         wordsDAO.updateWordById(newWord);
     }
 
-    private String getRandomWord(List<Words> listOfWords) {
+    public String getRandomWord(List<Words> listOfWords) {
 
         int randomIndex = new Random().nextInt(listOfWords.size()); // first we generate a random number
         return listOfWords.get(randomIndex).getName(); // the random number is the index for

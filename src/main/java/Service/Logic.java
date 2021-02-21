@@ -1,35 +1,116 @@
 package Service;
 
+import Database.WordsDAO;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
 public class Logic {
+    WordsDAO wordsDAO = new WordsDAO();
+    Service service = new Service();
 
+    public String randomWord = service.getRandomWord(wordsDAO.viewAllWords());
     public static int numberMistakes = 3;
 
-    public void gameLogic(Scanner scanner, String randomWord) {
+
+    public void gameLogic(Scanner scanner, String randomWord, Random random) {
 
         boolean hasStars = true;
 
-        Character[] workingWord = initialWording(randomWord);
+        Character[] workingWord = difficulty(scanner, random);
         Character[] originalWord = parseWordToArray(randomWord);
         while (hasStars) {
             Character letter = insertLetter(scanner);
             validateOption(letter, originalWord, workingWord);
+
             displayResult(workingWord);
+
             List<Character> characterList = Arrays.asList(workingWord);
+
             if (!characterList.contains('_')) {
                 hasStars = false;
                 System.out.println("\nWell done! The word is indeed " + randomWord + ".");
             }
+
             if (Logic.numberMistakes == 0) {
                 System.out.println("\nYou're out!");
                 hasStars = false;
             }
         }
         Logic.numberMistakes = 3;
+    }
+
+    public Character[] difficulty(Scanner scanner, Random random) {
+        Character[] workingWordArray = new Character[randomWord.length()];
+        boolean isRunning = true;
+        while (isRunning) {
+            System.out.println("Choose difficulty: ");
+            System.out.println("1. Easy\n2. Medium\n3. Hard");
+            int difficultyChoice = scanner.nextInt();
+
+            switch (difficultyChoice) {
+                case 1:
+                    workingWordArray = difficultyEasy( random, scanner);
+                    isRunning = false;
+                    break;
+                case 2:
+                    workingWordArray = difficultyMedium(randomWord);
+                    isRunning = false;
+                    break;
+                case 3:
+                    workingWordArray = difficultyHard(randomWord);
+                    isRunning = false;
+                    break;
+                default:
+                    System.out.println("Not a valid option. Valid options 1,2 or 3");
+            }
+        }
+        return workingWordArray;
+    }
+
+    public Character[] difficultyEasy(Random random, Scanner scanner) {    // initialize the word for helping the user
+
+        while (randomWord.length() > 6) {
+            randomWord = service.getRandomWord(wordsDAO.viewAllWords());
+        }
+
+        Character[] arrayOfUnderscores = createArrayOfUnderscores(randomWord.length());
+
+        Character[] arrayOfWord = parseWordToArray(randomWord);
+
+
+        int randomIndex = random.nextInt(randomWord.length());
+        char letter1 = randomWord.charAt(randomIndex);
+        char letter2 = randomWord.charAt(randomIndex);
+
+
+        while (letter1 == letter2) {
+            randomIndex = random.nextInt(randomWord.length());
+            letter2 = randomWord.charAt(randomIndex);
+        }
+        for (int i = 0; i < arrayOfWord.length; i++) {
+            if (letter1 == arrayOfWord[i] || letter2 == arrayOfWord[i]) {
+                arrayOfUnderscores[i] = arrayOfWord[i];
+            }
+        }
+        displayResult(arrayOfUnderscores);
+        return arrayOfUnderscores;
+    }
+
+    public Character[] difficultyMedium(String randomWord) {
+        Character[] arrayOfUnderscores = createArrayOfUnderscores(randomWord.length());
+        Character[] arrayOfWord = parseWordToArray(randomWord);
+        System.out.println("Difficulty Medium Test");
+        return arrayOfUnderscores;
+    }
+
+    public Character[] difficultyHard(String randomWord) {
+        Character[] arrayOfUnderscores = createArrayOfUnderscores(randomWord.length());
+        Character[] arrayOfWord = parseWordToArray(randomWord);
+        System.out.println("Difficulty Hard Test");
+        return arrayOfUnderscores;
     }
 
     public void displayResult(Character[] resultArray) {
@@ -61,30 +142,6 @@ public class Logic {
             letter = scanner.next();
         }
         return letter.charAt(0);
-    }
-
-    public Character[] initialWording(String randomWord) {    // initialize the word for helping the user
-        Character[] arrayOfStars = createArrayOfUnderscores(randomWord.length());
-
-        Character[] arrayOfWord = parseWordToArray(randomWord);
-
-        Random random = new Random();
-        int randomIndex = random.nextInt(randomWord.length());
-        char letter1 = randomWord.charAt(randomIndex);
-        char letter2 = randomWord.charAt(randomIndex);
-
-
-        while (letter1 == letter2) {
-            randomIndex = random.nextInt(randomWord.length());
-            letter2 = randomWord.charAt(randomIndex);
-        }
-        for (int i = 0; i < arrayOfWord.length; i++) {
-            if (letter1 == arrayOfWord[i] || letter2 == arrayOfWord[i]) {
-                arrayOfStars[i] = arrayOfWord[i];
-            }
-        }
-        displayResult(arrayOfStars);
-        return arrayOfStars;
     }
 
     public Character[] createArrayOfUnderscores(int length) {     // this array will be displayed
